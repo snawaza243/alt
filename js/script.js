@@ -90,25 +90,44 @@ document.addEventListener('DOMContentLoaded', function() {
     loadAllNotes();
     
     // Function to fetch all JSON files from the json folder
-    async function loadAllNotes() {
-        try {
-            // In a real app, you would fetch the list of files from the server
-            // For this demo, we'll simulate it with known files
-            const response = await fetch('json/2025-07-20.json');
-            if (!response.ok) throw new Error('Failed to load notes');
-            
-            const data = await response.json();
-            displayDailyNotes([data]);
-            
-            // For demo purposes, we'll initialize the other pages with this data
-            // In a real app, you would load all JSON files here
-            initializeVocabularyPage([data]);
-            initializeStatisticsPage([data]);
-        } catch (error) {
-            console.error('Error loading notes:', error);
-            alert('Failed to load learning notes. Please try again later.');
-        }
+async function loadAllNotes() {
+    try {
+        // Define the dates you have files for
+        const dates = [
+            '2025-07-20',
+            '2025-07-19',
+            '2025-07-18'
+            // Add more dates as needed
+        ];
+        
+        const allNotes = [];
+        
+        // Load each file in parallel
+        const filePromises = dates.map(async date => {
+            try {
+                const response = await fetch(`json/${date}.json`);
+                if (!response.ok) return null; // Skip if file doesn't exist
+                return await response.json();
+            } catch (e) {
+                return null; // Skip if there's an error
+            }
+        });
+        
+        const loadedNotes = await Promise.all(filePromises);
+        // Filter out null values (files that didn't exist)
+        allNotes.push(...loadedNotes.filter(note => note !== null));
+        
+        // Display all notes
+        displayDailyNotes(allNotes);
+        
+        // Initialize other pages with all data
+        initializeVocabularyPage(allNotes);
+        initializeStatisticsPage(allNotes);
+    } catch (error) {
+        console.error('Error loading notes:', error);
+        alert('Failed to load learning notes. Please try again later.');
     }
+}
     
     // Display daily notes on the home page
     function displayDailyNotes(notes) {
@@ -314,8 +333,13 @@ document.addEventListener('DOMContentLoaded', function() {
         let totalSentences = 0;
         const vocabByDate = [];
         const wordFrequency = {};
+        const earliestDate = new Date(window.statsNotes[0].date);
+        const latestDate = new Date(window.statsNotes[0].date);
         
         window.statsNotes.forEach(note => {
+            const noteDate = new Date(note.date);
+            if (noteDate < earliestDate) earliestDate = noteDate;
+            if (noteDate > latestDate) latestDate = noteDate;
             // Count vocabulary
             if (note.vocabulary) {
                 totalVocab += note.vocabulary.length;
@@ -337,10 +361,13 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
         
-        // Update statistics cards
-        document.getElementById('total-vocab').textContent = totalVocab;
-        document.getElementById('total-sentences').textContent = totalSentences;
-        document.getElementById('total-days').textContent = window.statsNotes.length;
+    // Calculate days between first and last note
+    const daysLearning = Math.ceil((latestDate - earliestDate) / (1000 * 60 * 60 * 24)) + 1;
+    
+    // Update statistics cards
+    document.getElementById('total-vocab').textContent = totalVocab;
+    document.getElementById('total-sentences').textContent = totalSentences;
+    document.getElementById('total-days').textContent = daysLearning;
         
         // Prepare word frequency list
         const wordFrequencyList = Object.entries(wordFrequency)
