@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arabic Vocabulary Tracker</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <h1>Arabic Vocabulary Tracker</h1>
+        <nav>
+            <ul>
+                <li><a href="#" class="nav-link active" data-page="home">Home</a></li>
+                <li><a href="#" class="nav-link" data-page="vocabulary">Vocabulary</a></li>
+                <li><a href="#" class="nav-link" data-page="stats">Statistics</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Home Page -->
+        <section id="home-page" class="page active">
+            <h2>Daily Learning Notes</h2>
+            <div id="notes-container"></div>
+        </section>
+
+        <!-- Vocabulary Page -->
+        <section id="vocabulary-page" class="page">
+            <h2>All Vocabulary</h2>
+            <div class="filter-controls">
+                <input type="text" id="vocab-search" placeholder="Search vocabulary...">
+                <select id="vocab-sort">
+                    <option value="date-desc">Date (Newest First)</option>
+                    <option value="date-asc">Date (Oldest First)</option>
+                    <option value="word-asc">Word (A-Z)</option>
+                    <option value="word-desc">Word (Z-A)</option>
+                </select>
+            </div>
+            <div id="vocabulary-container"></div>
+        </section>
+
+        <!-- Statistics Page -->
+        <section id="stats-page" class="page">
+            <h2>Learning Statistics</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>Total Vocabulary</h3>
+                    <p id="total-vocab">0</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Total Sentences</h3>
+                    <p id="total-sentences">0</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Days Learning</h3>
+                    <p id="total-days">0</p>
+                </div>
+            </div>
+            <div class="chart-container">
+                <canvas id="vocab-chart"></canvas>
+            </div>
+            <div id="frequent-words">
+                <h3>Most Frequent Words</h3>
+                <ol id="word-frequency-list"></ol>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>Arabic Vocabulary Tracker &copy; <span id="current-year"></span></p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/script.js"></script>
+</body>
+</html>
