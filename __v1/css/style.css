@@ -18,7 +18,6 @@ body {
     line-height: 1.6;
     color: #333;
     background-color: #f5f5f5;
-    transition: background-color 0.3s, color 0.3s;
 }
 
 header {
@@ -26,7 +25,6 @@ header {
     color: white;
     padding: 1rem 2rem;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    transition: background-color 0.3s;
 }
 
 header h1 {
@@ -77,7 +75,6 @@ h2 {
     margin-bottom: 1.5rem;
     padding-bottom: 0.5rem;
     border-bottom: 2px solid var(--secondary-color);
-    transition: color 0.3s;
 }
 
 /* Home Page Styles */
@@ -90,7 +87,6 @@ h2 {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    transition: background-color 0.3s;
 }
 
 .note-date::after {
@@ -110,7 +106,6 @@ h2 {
     border-radius: 0 0 4px 4px;
     margin-bottom: 1rem;
     display: none;
-    transition: background-color 0.3s, border-color 0.3s;
 }
 
 .note-content.active {
@@ -129,7 +124,6 @@ h2 {
     display: flex;
     flex-wrap: wrap;
     gap: 1rem;
-    transition: background-color 0.3s;
 }
 
 .vocab-item div, .sentence-item div {
@@ -151,7 +145,6 @@ h2 {
     padding: 0.5rem;
     border: 1px solid #ddd;
     border-radius: 4px;
-    transition: background-color 0.3s, border-color 0.3s, color 0.3s;
 }
 
 #vocab-sort {
@@ -159,7 +152,6 @@ h2 {
     border: 1px solid #ddd;
     border-radius: 4px;
     background-color: white;
-    transition: background-color 0.3s, border-color 0.3s, color 0.3s;
 }
 
 .vocab-card {
@@ -169,7 +161,6 @@ h2 {
     padding: 1rem;
     margin-bottom: 1rem;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-    transition: background-color 0.3s, border-color 0.3s, color 0.3s;
 }
 
 .vocab-card h3 {
@@ -186,7 +177,6 @@ h2 {
     color: #666;
     padding-left: 1rem;
     border-left: 3px solid var(--secondary-color);
-    transition: color 0.3s;
 }
 
 /* Statistics Page Styles */
@@ -203,14 +193,12 @@ h2 {
     border-radius: 4px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     text-align: center;
-    transition: background-color 0.3s, color 0.3s;
 }
 
 .stat-card h3 {
     color: var(--primary-color);
     margin-bottom: 0.5rem;
     font-size: 1.1rem;
-    transition: color 0.3s;
 }
 
 .stat-card p {
@@ -225,7 +213,6 @@ h2 {
     border-radius: 4px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     margin-bottom: 2rem;
-    transition: background-color 0.3s;
 }
 
 #frequent-words {
@@ -233,7 +220,6 @@ h2 {
     padding: 1.5rem;
     border-radius: 4px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    transition: background-color 0.3s;
 }
 
 #word-frequency-list {
@@ -251,7 +237,6 @@ footer {
     background-color: var(--dark-color);
     color: white;
     margin-top: 2rem;
-    transition: background-color 0.3s;
 }
 
 @media (max-width: 768px) {
@@ -267,90 +252,5 @@ footer {
     
     #vocab-search, #vocab-sort {
         width: 100%;
-    }
-}
-
-/* Dark Mode Styles */
-body.dark-mode {
-    background-color: #121212;
-    color: #e0e0e0;
-}
-
-body.dark-mode header {
-    background-color: #1e1e1e;
-}
-
-body.dark-mode .note-content,
-body.dark-mode .vocab-card,
-body.dark-mode .stat-card,
-body.dark-mode .chart-container,
-body.dark-mode #frequent-words {
-    background-color: #1e1e1e;
-    color: #e0e0e0;
-    border-color: #333;
-}
-
-body.dark-mode .vocab-item,
-body.dark-mode .sentence-item {
-    background-color: #2d2d2d;
-}
-
-body.dark-mode .note-date {
-    background-color: #2d2d2d;
-}
-
-body.dark-mode input,
-body.dark-mode select {
-    background-color: #2d2d2d;
-    color: #e0e0e0;
-    border-color: #444;
-}
-
-body.dark-mode footer {
-    background-color: #1e1e1e;
-}
-
-body.dark-mode .vocab-card .example {
-    color: #aaa;
-}
-
-body.dark-mode h2 {
-    color: #e0e0e0;
-}
-
-body.dark-mode .stat-card h3 {
-    color: #e0e0e0;
-}
-
-/* Dark mode toggle button */
-.theme-toggle {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background: var(--secondary-color);
-    color: white;
-    border: none;
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    font-size: 1.5rem;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-    z-index: 1000;
-    transition: all 0.3s ease;
-}
-
-.theme-toggle:hover {
-    transform: scale(1.1);
-}
-
-@media (max-width: 768px) {
-    .theme-toggle {
-        width: 40px;
-        height: 40px;
-        font-size: 1.2rem;
     }
 }

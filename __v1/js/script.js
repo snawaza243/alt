@@ -1,62 +1,4 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Dark mode functionality
-    function initializeDarkMode() {
-        const darkMode = localStorage.getItem('darkMode') === 'true';
-        if (darkMode) {
-            document.body.classList.add('dark-mode');
-        }
-        
-        // Update Chart.js colors for dark mode
-        if (darkMode && window.vocabChart) {
-            updateChartForDarkMode(window.vocabChart);
-        }
-        
-        return darkMode;
-    }
-    
-    function toggleDarkMode() {
-        const isDarkMode = document.body.classList.toggle('dark-mode');
-        localStorage.setItem('darkMode', isDarkMode);
-        
-        // Update Chart.js colors if chart exists
-        if (window.vocabChart) {
-            updateChartForDarkMode(window.vocabChart);
-        }
-        
-        return isDarkMode;
-    }
-    
-    function updateChartForDarkMode(chart) {
-        const isDarkMode = document.body.classList.contains('dark-mode');
-        
-        if (isDarkMode) {
-            chart.options.scales.x.grid.color = 'rgba(255, 255, 255, 0.1)';
-            chart.options.scales.y.grid.color = 'rgba(255, 255, 255, 0.1)';
-            chart.options.scales.x.ticks.color = '#e0e0e0';
-            chart.options.scales.y.ticks.color = '#e0e0e0';
-            chart.options.plugins.title.color = '#e0e0e0';
-        } else {
-            chart.options.scales.x.grid.color = 'rgba(0, 0, 0, 0.1)';
-            chart.options.scales.y.grid.color = 'rgba(0, 0, 0, 0.1)';
-            chart.options.scales.x.ticks.color = '#666';
-            chart.options.scales.y.ticks.color = '#666';
-            chart.options.plugins.title.color = '#333';
-        }
-        
-        chart.update();
-    }
-    
-    // Initialize dark mode
-    const isDarkMode = initializeDarkMode();
-    
-    // Set up theme toggle button
-    const themeToggle = document.querySelector('.theme-toggle');
-    themeToggle.textContent = isDarkMode ? '🌞' : '🌙';
-    themeToggle.addEventListener('click', function() {
-        const isDarkMode = toggleDarkMode();
-        this.textContent = isDarkMode ? '🌞' : '🌙';
-    });
-    
     // Set current year in footer
     document.getElementById('current-year').textContent = new Date().getFullYear();
     
@@ -90,25 +32,44 @@ document.addEventListener('DOMContentLoaded', function() {
     loadAllNotes();
     
     // Function to fetch all JSON files from the json folder
-    async function loadAllNotes() {
-        try {
-            // In a real app, you would fetch the list of files from the server
-            // For this demo, we'll simulate it with known files
-            const response = await fetch('json/2025-07-20.json');
-            if (!response.ok) throw new Error('Failed to load notes');
-            
-            const data = await response.json();
-            displayDailyNotes([data]);
-            
-            // For demo purposes, we'll initialize the other pages with this data
-            // In a real app, you would load all JSON files here
-            initializeVocabularyPage([data]);
-            initializeStatisticsPage([data]);
-        } catch (error) {
-            console.error('Error loading notes:', error);
-            alert('Failed to load learning notes. Please try again later.');
-        }
+async function loadAllNotes() {
+    try {
+        // Define the dates you have files for
+        const dates = [
+            '2025-07-20',
+            '2025-07-19',
+            '2025-07-18'
+            // Add more dates as needed
+        ];
+        
+        const allNotes = [];
+        
+        // Load each file in parallel
+        const filePromises = dates.map(async date => {
+            try {
+                const response = await fetch(`json/${date}.json`);
+                if (!response.ok) return null; // Skip if file doesn't exist
+                return await response.json();
+            } catch (e) {
+                return null; // Skip if there's an error
+            }
+        });
+        
+        const loadedNotes = await Promise.all(filePromises);
+        // Filter out null values (files that didn't exist)
+        allNotes.push(...loadedNotes.filter(note => note !== null));
+        
+        // Display all notes
+        displayDailyNotes(allNotes);
+        
+        // Initialize other pages with all data
+        initializeVocabularyPage(allNotes);
+        initializeStatisticsPage(allNotes);
+    } catch (error) {
+        console.error('Error loading notes:', error);
+        alert('Failed to load learning notes. Please try again later.');
     }
+}
     
     // Display daily notes on the home page
     function displayDailyNotes(notes) {
@@ -367,7 +328,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // Create Chart.js chart for vocabulary over time
     function createVocabularyChart(data) {
         const ctx = document.getElementById('vocab-chart').getContext('2d');
-        const isDarkMode = document.body.classList.contains('dark-mode');
         
         // Sort data by date
         data.sort((a, b) => new Date(a.date) - new Date(b.date));
@@ -379,10 +339,6 @@ document.addEventListener('DOMContentLoaded', function() {
         if (window.vocabChart) {
             window.vocabChart.destroy();
         }
-        
-        const gridColor = isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)';
-        const ticksColor = isDarkMode ? '#e0e0e0' : '#666';
-        const titleColor = isDarkMode ? '#e0e0e0' : '#333';
         
         window.vocabChart = new Chart(ctx, {
             type: 'line',
@@ -403,8 +359,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 plugins: {
                     title: {
                         display: true,
-                        text: 'Vocabulary Learning Progress',
-                        color: titleColor
+                        text: 'Vocabulary Learning Progress'
                     },
                     tooltip: {
                         callbacks: {
@@ -419,27 +374,13 @@ document.addEventListener('DOMContentLoaded', function() {
                         beginAtZero: true,
                         title: {
                             display: true,
-                            text: 'Number of Words',
-                            color: ticksColor
-                        },
-                        grid: {
-                            color: gridColor
-                        },
-                        ticks: {
-                            color: ticksColor
+                            text: 'Number of Words'
                         }
                     },
                     x: {
                         title: {
                             display: true,
-                            text: 'Date',
-                            color: ticksColor
-                        },
-                        grid: {
-                            color: gridColor
-                        },
-                        ticks: {
-                            color: ticksColor
+                            text: 'Date'
                         }
                     }
                 }

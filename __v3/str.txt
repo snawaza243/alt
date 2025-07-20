@@ -1,0 +1,20 @@
+arabic-vocabulary-app/
+│
+├── assets/
+│   ├── audio/          # Pronunciation files
+│   ├── icons/          # Custom icons
+│   └── images/         # Backgrounds and illustrations
+│
+├── json/
+│   └── *.json          # Your vocabulary files
+│
+├── css/
+│   ├── components/     # Modular CSS
+│   ├── themes/         # Color schemes
+│   └── style.css       # Main stylesheet
+│
+├── js/
+│   ├── modules/        # Feature modules
+│   └── script.js       # Main application
+│
+└── index.html

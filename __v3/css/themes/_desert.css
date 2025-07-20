@@ -1,0 +1,32 @@
+/* _desert.css */
+.desert-theme {
+    /* Colors */
+    --color-primary: #c46b39;
+    --color-primary-dark: #8c4b21;
+    --color-accent: #8e44ad;
+    --color-success: #27ae60;
+    --color-warning: #f39c12;
+    --color-danger: #e74c3c;
+    
+    /* Backgrounds */
+    --color-bg: #f4e7d3;
+    --color-bg-alt: #e8d5b5;
+    --color-bg-card: #e8d5b5;
+    
+    /* Text */
+    --color-text: #5c4d3c;
+    --color-text-alt: #7a6b5a;
+    --color-text-light: #9c8d7c;
+    
+    /* Borders */
+    --color-border: #d1b38e;
+    --color-border-light: #e2d4bc;
+    
+    /* Interactive */
+    --color-hover: #f0e2c8;
+    --color-active: #e2d4bc;
+    
+    /* Specials */
+    --color-highlight: rgba(196, 107, 57, 0.2);
+    --color-overlay: rgba(244, 231, 211, 0.9);
+}
